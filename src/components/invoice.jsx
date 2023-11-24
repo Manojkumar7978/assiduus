@@ -37,6 +37,7 @@ export default function Invoice({ data }) {
       .domain([0, d3.max(data, (d) => d.value)]) 
       .range([height - (margin.bottom+20), margin.top]);
 
+      svg.selectAll('*').remove();
 
     svg
       .selectAll('rect')

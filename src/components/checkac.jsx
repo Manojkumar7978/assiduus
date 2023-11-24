@@ -5,10 +5,10 @@ import {
     Select,
 } from '@chakra-ui/react';
 
-export default function Checkac({ accountData }) {
+export default function Checkac({ accountData,randomdata }) {
     const chartRef = useRef();
     useEffect(() => {
-        if (!chartRef.current) return;
+        if (!chartRef.current || !accountData.length) return;
         const svg = d3.select(chartRef.current);
 
         let width = 550
@@ -33,6 +33,7 @@ export default function Checkac({ accountData }) {
       .y((d) => y(d.value))
       .curve(d3.curveBasis);
 
+      svg.selectAll('*').remove();
 
       svg
       .append('path')
@@ -77,6 +78,7 @@ export default function Checkac({ accountData }) {
                 </Select>
                 <Select w={'100px'} borderRadius={5}
                     fontWeight={'bold'}
+                    onChange={randomdata}
                     placeholder={'Jan'} defaultValue={'Jan'} size='sm'>
                     <option value='Feb'>Feb</option>
                     <option value='Mar'>Mar</option>

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { Box,  chakra } from '@chakra-ui/react'
+import { Box,  Button,  chakra } from '@chakra-ui/react'
 import BarChart from './invoice';
 import Watchlist from './watchlist';
 import Cashflowchart from './cashflowchart';
@@ -122,8 +122,10 @@ export default function Content() {
         randomdata()
     },[])
     return (
+        <chakra.div  bg={'#f6f7f9'} display={'grid'} placeItems={'center'} pt={10}>
+            <Button onClick={randomdata} w={'200px'} colorScheme='green' >Random Data</Button>
+
         <chakra.div
-            bg={'#f6f7f9'}
             p={10}
             display={'grid'}
             gridTemplateColumns={'repeat(2, 1fr)'}
@@ -135,7 +137,7 @@ export default function Content() {
                 bg={'white'}
                 borderRadius={10}
             >
-                <Checkac accountData={accountData} />
+                <Checkac accountData={accountData}  randomdata={randomdata}/>
             </Box>
             <Box w={'550px'} h={'350px'}
                 boxShadow={'md'}
@@ -162,6 +164,7 @@ export default function Content() {
 
 
 
+        </chakra.div>
         </chakra.div>
     )
 }

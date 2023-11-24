@@ -33,7 +33,8 @@ export default function Cashflowchart({ cashflowData }) {
             .domain([0, d3.max(cashflowData, (d) => Math.max(d.in, d.out))])
             .range([height - (margin.bottom + 20), margin.top]);
 
-        
+            svg.selectAll('*').remove();
+
         dataKeys.forEach((key, i) => {
             svg
                 .selectAll(`.rect-${key}`)
