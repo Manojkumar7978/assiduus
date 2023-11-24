@@ -4,6 +4,10 @@ import { BiSolidReport } from "react-icons/bi";
 import { IoPerson } from "react-icons/io5";
 import { BiSolidContact } from "react-icons/bi";
 
+function getRandomNumber() {
+    return Math.floor(Math.random() * (100 - 10 + 1)) + 10;
+  }
+
 let menu=[
     {
         logo:<MdDashboard size={25}/>,
@@ -60,7 +64,10 @@ let watchlistData=[
     
 ]
 
+
+
 export default menu;
 export {
-    watchlistData
+    watchlistData,
+    getRandomNumber,
 }

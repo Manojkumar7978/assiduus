@@ -6,10 +6,12 @@ import {
 
 } from '@chakra-ui/react';
 
-export default function Cashflowchart({ data }) {
+export default function Cashflowchart({ cashflowData }) {
     const chartRef = useRef();
+    
     useEffect(() => {
         if (!chartRef.current) return;
+
 
         const svg = d3.select(chartRef.current);
         const width = 550;
@@ -22,20 +24,20 @@ export default function Cashflowchart({ data }) {
 
         const x = d3
             .scaleBand()
-            .domain(data.map((d) => d.month))
+            .domain(cashflowData.map((d) => d.month))
             .range([0, width])
             .padding(0.8);
 
         const y = d3
             .scaleLinear()
-            .domain([0, d3.max(data, (d) => Math.max(d.in, d.out))])
+            .domain([0, d3.max(cashflowData, (d) => Math.max(d.in, d.out))])
             .range([height - (margin.bottom + 20), margin.top]);
 
         
         dataKeys.forEach((key, i) => {
             svg
                 .selectAll(`.rect-${key}`)
-                .data(data)
+                .data(cashflowData)
                 .enter()
                 .append('rect')
                 .attr('class', `rect-${key}`)
@@ -61,8 +63,7 @@ export default function Cashflowchart({ data }) {
             .append('g')
             .attr('transform', `translate(${margin.left},0)`)
 
-    }, [data]);
-
+    }, [cashflowData]);
 
     return (<>
         <Box h={'50px'} borderBottom={'1px solid #e6edfa'}
@@ -79,7 +80,7 @@ export default function Cashflowchart({ data }) {
                 fontSize={'small'}
                 fontWeight={'400'}
             >
-                <chakra.div borderRadius={3} w={3} h={3} bg={'green'}></chakra.div>
+                <chakra.div borderRadius={3} w={3} h={3} bg={'#02bb7d'}></chakra.div>
                 In
                 <chakra.div borderRadius={3} w={3} h={3} bg={'green'}></chakra.div>
                 Out

@@ -2,65 +2,57 @@ import React, { useRef, useEffect } from 'react';
 import * as d3 from 'd3';
 import {
     Box, Heading,
-    chakra
-
+    Select,
 } from '@chakra-ui/react';
-export default function Checkac({data}) {
+
+export default function Checkac({ accountData }) {
     const chartRef = useRef();
     useEffect(() => {
         if (!chartRef.current) return;
-
         const svg = d3.select(chartRef.current);
-        const width = 550;
-        const height = 300;
-        const margin = { top: 10, right: 0, bottom: 20, left: 0 };
-        const dataKeys = ['in', 'out'];
-        const color = d3.scaleOrdinal().domain(dataKeys).range(['#02bb7d', '#47b747']);
 
-        svg.attr('width', width).attr('height', height);
+        let width = 550
+        let height = 300
+        const margin = { top: 10, right: 0, bottom: 20, left: 0 };
 
         const x = d3
-            .scaleBand()
-            .domain(data.map((d) => d.month))
-            .range([0, width])
-            .padding(0.8);
-
-        const y = d3
-            .scaleLinear()
-            .domain([0, d3.max(data, (d) => Math.max(d.in, d.out))])
-            .range([height - (margin.bottom + 20), margin.top]);
-
-        
-        dataKeys.forEach((key, i) => {
-            svg
-                .selectAll(`.rect-${key}`)
-                .data(data)
-                .enter()
-                .append('rect')
-                .attr('class', `rect-${key}`)
-                .attr('x', (d) => x(d.month))
-                .attr('y', (d) => y(d[key]))
-                .attr('width', x.bandwidth())
-                .attr('height', (d) => y(0) - y(d[key]))
-                .attr('fill', color(key))
-                .attr('rx', 6)
-                .attr('ry', 6);
-        });
+      .scaleBand()
+      .domain(accountData.map((d) => d.id))
+      .range([0, width - margin.right])
+      .padding(0.1);
+  
+      const y = d3
+      .scaleLinear()
+      .domain([0, d3.max(accountData, (d) => d.value)])
+      .range([height - margin.bottom, margin.top]);
 
 
-        const xAxis = d3.axisBottom().scale(x).tickSize(0);
+      const line = d3
+      .line()
+      .x((d) => x(d.id) + x.bandwidth())
+      .y((d) => y(d.value))
+      .curve(d3.curveBasis);
 
-        svg
-            .append('g')
-            .attr('transform', `translate(0,${height - margin.bottom})`)
-            .call(xAxis)
-            .call(g => g.select(".domain").remove())
 
-        svg
-            .append('g')
-            .attr('transform', `translate(${margin.left},0)`)
+      svg
+      .append('path')
+      .datum(accountData)
+      .attr('fill', 'none')
+      .attr('stroke', 'green')
+      .attr('stroke-width', 2)
+      .attr('d', line);
 
-    }, [data]);
+    svg
+      .append('g')
+      .attr('transform', `translate(0, ${height - margin.bottom})`)
+      .call(d3.axisBottom(x).tickSize(0))
+      .call(g => g.select(".domain").remove())
+      .selectAll('text')
+      .style('text-anchor', 'end')
+      .attr('dx', '20px')
+      .attr('dy', '10px')
+
+    }, [accountData]);
 
 
     return (<>
@@ -70,7 +62,7 @@ export default function Checkac({data}) {
             padding={'0 10px'}
             alignItems={'center'}
         >
-            <Heading size={'md'}>Total cash flow</Heading>
+            <Heading size={'md'}>Checking Account</Heading>
             <Box
                 display={'flex'}
                 gap={2}
@@ -78,14 +70,31 @@ export default function Checkac({data}) {
                 fontSize={'small'}
                 fontWeight={'400'}
             >
-                <chakra.div borderRadius={3} w={3} h={3} bg={'green'}></chakra.div>
-                In
-                <chakra.div borderRadius={3} w={3} h={3} bg={'green'}></chakra.div>
-                Out
+                <Select w={'100px'} borderRadius={5}
+                    fontWeight={'bold'}
+                    placeholder={'Manage'} defaultValue={'Jan'} size='sm'>
+
+                </Select>
+                <Select w={'100px'} borderRadius={5}
+                    fontWeight={'bold'}
+                    placeholder={'Jan'} defaultValue={'Jan'} size='sm'>
+                    <option value='Feb'>Feb</option>
+                    <option value='Mar'>Mar</option>
+                    <option value='Apr'>Apr</option>
+                    <option value='May'>May</option>
+                    <option value='Jun'>Jun</option>
+                    <option value='July'>July</option>
+                    <option value='Aug'>Aug</option>
+                    <option value='Sept'>Sept</option>
+                    <option value='Oct'>Oct</option>
+                    <option value='Nov'>Nov</option>
+                    <option value='Dec'>Dec</option>
+                </Select>
+
             </Box>
 
         </Box>
-        <svg ref={chartRef}></svg>
+        <svg ref={chartRef} width={'550px'} height={'300px'}></svg>
 
 
     </>
