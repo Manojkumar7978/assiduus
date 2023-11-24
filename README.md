@@ -2,9 +2,9 @@
 - Assiduus dashboard where some chart is available and a side menu bar and header section.
 
 ## Deployed link
-- 
+- https://master--nimble-mooncake-75505a.netlify.app/
 ## Demo
-- 
+- https://vimeo.com/887956590/aa84e6e466?share=copy
 
 
 ## tech stack
